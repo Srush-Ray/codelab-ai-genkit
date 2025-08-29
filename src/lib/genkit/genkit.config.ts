@@ -18,12 +18,15 @@ import { genkit } from 'genkit';
 import { enableFirebaseTelemetry } from '@genkit-ai/firebase';
 import { vertexAI } from '@genkit-ai/vertexai';
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  // ...
-  projectId: 'REPLACE_WITH_YOUR_PROJECT_ID',
-  // ...
+  apiKey: "AIzaSyAKNn_Nbu9knMLtWQAroSPx55w0AS14mLc",
+  authDomain: "codelab-compass-genkit.firebaseapp.com",
+  projectId: "codelab-compass-genkit",
+  storageBucket: "codelab-compass-genkit.firebasestorage.app",
+  messagingSenderId: "64380703802",
+  appId: "1:64380703802:web:f660b901a3c8e962add103"
 };
+
 
 export const getProjectId = () => firebaseConfig.projectId;
 
