@@ -30,6 +30,7 @@ const firestore_1 = require("firebase-admin/firestore");
 const fs_1 = require("fs");
 const activitiesCollection = 'activities';
 const placesCollection = 'places';
+const Collection = 'anime';
 const sliceSize = 100;
 const dataDir = './data';
 const getProjectId = () => {
@@ -63,6 +64,9 @@ function uploadData(baseCollection_1) {
                 const doc = Object.assign({}, d);
                 if (doc.embedding) {
                     doc.embedding = firestore_1.FieldValue.vector(doc.embedding['_values']);
+                }
+                if (doc.desEmbedding) {
+                    doc.desEmbedding = firestore_1.FieldValue.vector(doc.embedding['_values']);
                 }
                 return firestore.collection(baseCollection).add(doc);
             }));

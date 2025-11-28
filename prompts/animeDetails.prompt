@@ -1,0 +1,25 @@
+---
+model: vertexai/gemini-2.5-flash
+input:
+  schema:
+    name: string
+    request: string
+output:
+  schema:
+    type: array
+    items:
+      type: object
+      properties:
+        name: {type: string}
+        description: {type: string}
+        genre: {type: array, items: {type: string}}
+        rating: {type: number}
+        startedIn: {type: number, description: "Year the anime started"} 
+        numberOfSeasons: {type: number}
+        currentStatus: {type: string, description: "e.g. Ongoing, Completed"}
+---
+
+From the name {{name}}. Find me the anime details that is the most similar to it.
+Make sure to include the description, name, start year, number of seasons, and current status.
+Consider below factors:
+{{request}}

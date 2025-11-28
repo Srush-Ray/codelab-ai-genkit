@@ -15,3 +15,4 @@
  */
 
 import './lib/genkit/itineraryFlow';
+import './lib/genkit/anime-list'

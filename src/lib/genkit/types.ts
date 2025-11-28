@@ -30,6 +30,19 @@ export type Place = {
   tags: string[];
 };
 
+export type AnimeObject = {
+  embedding?: unknown;
+  desEmbedding?: unknown;
+  name: string,
+  rating: number,
+  startedIn: number,
+  numberOfSeasons: number,
+  genre: string[],
+  description: string,
+  currentStatus: string,
+  ref: string,
+};
+
 /**
  * Firestore data object for /activities collection
  */
@@ -53,6 +66,14 @@ export const ItineraryFlowInput = z.object({
 });
 
 export type ItineraryFlowInput = z.infer<typeof ItineraryFlowInput>;
+
+export const AnimeFlowInput = z.object({
+  request: z.string(),
+  imageUrls: z.array(z.string()).optional(),
+});
+
+export type AnimeFlowInput = z.infer<typeof AnimeFlowInput>;
+
 
 const DayActivity = z.object({
   activityRef: z.string(),
@@ -82,8 +103,25 @@ export const Destination = z.object({
   placeRef: z.string(),
 });
 
+export const Anime = z.object({
+  name: z.string(),
+  rating: z.number(),
+  startedIn: z.number(),
+  numberOfSeasons: z.number(),
+  genre: z.array(z.string()),
+  description: z.string(),
+  currentStatus: z.string(),
+});
+
 export type Destination = z.infer<typeof Destination>;
 
 export const ItineraryFlowOutput = z.array(Destination);
 
 export type ItineraryFlowOutput = z.infer<typeof ItineraryFlowOutput>;
+
+
+export const AnimeFlowOutput = z.array(Anime);
+
+export type AnimeFlowOutput = z.infer<typeof AnimeFlowOutput>;
+
+export type Anime = z.infer<typeof Anime>;

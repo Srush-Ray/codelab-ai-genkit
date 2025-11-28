@@ -20,7 +20,7 @@ import { vertexAI } from '@genkit-ai/vertexai';
 import { getApp, initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 
-import { Activity } from './types';
+import { Activity, Anime, AnimeObject } from './types';
 import { ai, getProjectId } from './genkit.config';
 
 function getOrInitApp() {
@@ -52,27 +52,51 @@ export const getActivitiesForDestination = async (placeId: string) => {
   return resultData;
 };
 
+export const getAnimes = async (name: string) => {
+  if (!name) {
+    return [];
+  }
+  const docs = await firestore
+    .collection('anime')
+    .where('name', '==', name)
+    .get();
+  const resultData = docs.docs.map((doc) => {
+    const data = doc.data() as AnimeObject;
+    delete data.embedding;
+    delete data.desEmbedding;
+    return data;
+  });
+  return resultData;
+};
+
 /**
  * Retriever for places based on the `knownFor` field using the Genkit retriever for Firestore.
  */
+// export const placesRetriever = ai.defineRetriever(
+//   { name: 'placesRetriever' },
+//   async () => ({ documents: [{ content: [{ text: 'TODO' }] }] }),
+// );
+// TODO: 1. Replace the lines above with this:
 export const placesRetriever = defineFirestoreRetriever(ai, {
   name: 'placesRetriever',
   firestore,
   collection: 'places',
   contentField: 'knownFor',
   vectorField: 'embedding',
-  embedder: vertexAI.embedder('text-embedding-005', {outputDimensionality: 768}),
+  embedder: vertexAI.embedder('gemini-embedding-001', {
+    outputDimensionality: 768,
+  }),
   distanceMeasure: 'COSINE',
 });
-// TODO: 1. Replace the lines above with this:
-// export const placesRetriever = defineFirestoreRetriever(ai, {
-//   name: 'placesRetriever',
-//   firestore,
-//   collection: 'places',
-//   contentField: 'knownFor',
-//   vectorField: 'embedding',
-//   embedder: vertexAI.embedder('gemini-embedding-001', {
-//     outputDimensionality: 768,
-//   }),
-//   distanceMeasure: 'COSINE',
-// });
+
+export const animeRetriever = defineFirestoreRetriever(ai, {
+  name: 'animeRetriever',
+  firestore,
+  collection: 'anime',
+  contentField: 'description',
+  vectorField: 'desEmbedding',
+  embedder: vertexAI.embedder('gemini-embedding-001', {
+    outputDimensionality: 64,
+  }),
+  distanceMeasure: 'COSINE',
+});

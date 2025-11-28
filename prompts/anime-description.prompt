@@ -1,0 +1,13 @@
+---
+model: vertexai/gemini-2.5-flash
+config:
+  temperature: 1.0
+input:
+  schema:
+    imageUrls(array): string
+---
+
+Describe the image and give details about the anime the images represents. Give a paragraph that gives a glimse of the anime story line.
+Do not include the name of the anime and write the paragraph such that it will create interest to watch the show.
+
+{{#each imageUrls}}{{media url=this}}{{/each}}
